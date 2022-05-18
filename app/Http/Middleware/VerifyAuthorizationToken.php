@@ -29,6 +29,6 @@ class VerifyAuthorizationToken
     {
         $arrUrlWhenSplitApi = explode("api", $url);
         $roleKeyFromUrl = strtoupper(explode("/", $arrUrlWhenSplitApi[1])[1]);
-        return config('constants.role.' . $roleKeyFromUrl);
+        return config('constants.ROLE.' . $roleKeyFromUrl);
     }
 }

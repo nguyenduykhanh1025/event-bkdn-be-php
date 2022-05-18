@@ -31,7 +31,7 @@ class PaginationDTO extends DTO
         }
 
         $data = $result['data'];
-        $data['limit'] = $data['limit'] ?? config('constants.paginate.PER_PAGE');
+        $data['limit'] = $data['limit'] ?? config('constants.PAGINATE.PER_PAGE');
         $result['data'] = $data;
         return $result;
     }

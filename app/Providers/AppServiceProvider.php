@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
     {
         if (Schema::hasTable('roles')) {
             $allRolesInDatabase = Role::all()->pluck('name');
-            $rolesInitial = config('constants.role');
+            $rolesInitial = config('constants.ROLE');
             $keys = array_keys($rolesInitial);
 
             foreach ($keys as $key) {

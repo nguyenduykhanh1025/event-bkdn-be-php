@@ -11,6 +11,7 @@ Route::group(['middleware' => ['verify.authenticate.token', 'verify.authorizatio
      * start API FOR ADMIN
      */
     Route::name('admin-user')->prefix('admin/users')->group(base_path('routes/apis/admin/UserApi.php'));
+    Route::name('admin-event')->prefix('admin/events')->group(base_path('routes/apis/admin/EventApi.php'));
 
     /**
      * start API FOR PARTICIPANT

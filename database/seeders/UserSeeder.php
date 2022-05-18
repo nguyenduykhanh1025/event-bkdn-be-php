@@ -34,7 +34,7 @@ class UserSeeder extends Seeder
             $dataNeedCreate['avatar'] = "";
             $dataNeedCreate['info_description'] = "Adu adu adu";
             $user = $this->userRepository->store($dataNeedCreate);
-            $user->assignRole(config('constants.role.PARTICIPANT'));
+            $user->assignRole(config('constants.ROLE.PARTICIPANT'));
         }
     }
 
@@ -49,7 +49,7 @@ class UserSeeder extends Seeder
             $dataNeedCreate['avatar'] = "";
             $dataNeedCreate['info_description'] = "Adu adu adu";
             $user = $this->userRepository->store($dataNeedCreate);
-            $user->assignRole(config('constants.role.ADMIN'));
+            $user->assignRole(config('constants.ROLE.ADMIN'));
         }
     }
 }

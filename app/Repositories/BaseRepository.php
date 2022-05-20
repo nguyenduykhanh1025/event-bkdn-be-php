@@ -18,7 +18,7 @@ class BaseRepository
     }
     public function findById($id)
     {
-        return $this->model->findOrFail($id);
+        return $this->model->where('id', $id)->first();
     }
     public function store($data)
     {

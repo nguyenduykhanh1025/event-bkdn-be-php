@@ -24,4 +24,9 @@ class EventService
 
         return $this->eventRepository->paginate($limit, $sortColumn, $sortType, $filterColumn, $filterData, $searchData);
     }
+
+    public function getById($id)
+    {
+        return $this->eventRepository->findById($id);
+    }
 }

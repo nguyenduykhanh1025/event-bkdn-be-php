@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DTOs\Event\NewEventDTO;
 use App\DTOs\Pagination\PaginationDTO;
 use App\DTOs\Pagination\PaginationResponseDTO;
 use App\DTOs\User\UpdateUserDTO;
@@ -43,6 +44,77 @@ class EventController extends Controller
         }
     }
 
+
+
+    public function paginateEventIncoming(Request $request)
+    {
+        $validate = (new PaginationDTO())->validateRequest($request);
+        if ($validate['is_error']) {
+            return  $this->responseError($validate['data'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $paginationDataFromRequest = $validate['data'];
+        try {
+            $paginateDataFromDB = $this->eventService->paginateEventIncoming($paginationDataFromRequest);
+
+            $result = (new PaginationResponseDTO())
+                ->setItems($paginateDataFromDB->items())
+                ->setMetaCurrentPage($paginateDataFromDB->currentPage())
+                ->setMetaPerPage($paginateDataFromDB->perPage())
+                ->setMetaTotal($paginateDataFromDB->total());
+
+            return $this->responseSuccess($result->getResponse(), Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function paginateEventHappening(Request $request)
+    {
+        $validate = (new PaginationDTO())->validateRequest($request);
+        if ($validate['is_error']) {
+            return  $this->responseError($validate['data'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $paginationDataFromRequest = $validate['data'];
+        try {
+            $paginateDataFromDB = $this->eventService->paginateEventHappening($paginationDataFromRequest);
+
+            $result = (new PaginationResponseDTO())
+                ->setItems($paginateDataFromDB->items())
+                ->setMetaCurrentPage($paginateDataFromDB->currentPage())
+                ->setMetaPerPage($paginateDataFromDB->perPage())
+                ->setMetaTotal($paginateDataFromDB->total());
+
+            return $this->responseSuccess($result->getResponse(), Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function paginateEventOver(Request $request)
+    {
+        $validate = (new PaginationDTO())->validateRequest($request);
+        if ($validate['is_error']) {
+            return  $this->responseError($validate['data'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $paginationDataFromRequest = $validate['data'];
+        try {
+            $paginateDataFromDB = $this->eventService->paginateEventOver($paginationDataFromRequest);
+
+            $result = (new PaginationResponseDTO())
+                ->setItems($paginateDataFromDB->items())
+                ->setMetaCurrentPage($paginateDataFromDB->currentPage())
+                ->setMetaPerPage($paginateDataFromDB->perPage())
+                ->setMetaTotal($paginateDataFromDB->total());
+
+            return $this->responseSuccess($result->getResponse(), Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function show(Request $request)
     {
         $routeParameters = $request->route()->parameters();
@@ -50,6 +122,23 @@ class EventController extends Controller
         try {
             $dataResponse = $this->eventService->getById($eventId);
             return $this->responseSuccess($dataResponse);
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function create(Request $request)
+    {
+        $validate = (new NewEventDTO())->validateRequest($request);
+        if ($validate['is_error']) {
+            return  $this->responseError($validate['data'], Response::HTTP_BAD_REQUEST);
+        }
+
+        try {
+            return $this->responseSuccess(
+                $this->eventService->create($validate['data']),
+                Response::HTTP_OK
+            );
         } catch (\Exception $e) {
             return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }

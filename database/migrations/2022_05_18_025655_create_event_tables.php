@@ -19,8 +19,8 @@ class CreateEventTables extends Migration
             $table->string('title', 255)->default(null);
             $table->string('type', 45)->default(null);
             $table->integer('count_need_participate')->default(null);
-            $table->integer('count_participated')->default(null);
-            $table->integer('count_registered')->default(null);
+            $table->integer('count_participated')->nullable();
+            $table->integer('count_registered')->nullable();
             $table->dateTime('start_at')->default(null);
             $table->dateTime('end_at')->default(null);
             $table->string('address', 255)->default(null);

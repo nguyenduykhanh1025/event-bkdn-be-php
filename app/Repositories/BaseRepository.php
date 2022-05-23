@@ -22,6 +22,18 @@ class BaseRepository
     }
     public function store($data)
     {
-        return $this->model->create($data);
+        if ($data['id']) {
+            return $this->model->update($data);
+        } else {
+            return $this->model->create($data);
+        }
+    }
+    public function deleteById($id)
+    {
+        $dataFromDB = $this->model->where('id', $id)->first();
+        if (empty($dataFromDB)) {
+            return null;
+        }
+        return $this->model->destroy($dataFromDB);
     }
 }

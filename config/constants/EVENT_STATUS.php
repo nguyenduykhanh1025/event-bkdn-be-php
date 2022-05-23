@@ -2,4 +2,6 @@
 
 return [
     'INCOMING_EVENT' => 'INCOMING_EVENT',
+    'HAPPENING_EVENT' => 'HAPPENING_EVENT',
+    'OVER_EVENT' => 'OVER_EVENT',
 ];

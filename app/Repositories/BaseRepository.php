@@ -22,11 +22,7 @@ class BaseRepository
     }
     public function store($data)
     {
-        if ($data['id']) {
-            return $this->model->update($data);
-        } else {
-            return $this->model->create($data);
-        }
+        return $this->model->create($data);
     }
     public function deleteById($id)
     {

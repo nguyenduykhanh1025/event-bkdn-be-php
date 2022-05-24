@@ -105,4 +105,27 @@ class UserController extends Controller
             return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function paginateParticipant(Request $request)
+    {
+        $validate = (new PaginationDTO())->validateRequest($request);
+        if ($validate['is_error']) {
+            return  $this->responseError($validate['data'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $paginationDataFromRequest = $validate['data'];
+        try {
+            $paginateDataFromDB = $this->userService->paginateParticipant($paginationDataFromRequest);
+
+            $result = (new PaginationResponseDTO())
+                ->setItems($paginateDataFromDB->items())
+                ->setMetaCurrentPage($paginateDataFromDB->currentPage())
+                ->setMetaPerPage($paginateDataFromDB->perPage())
+                ->setMetaTotal($paginateDataFromDB->total());
+
+            return $this->responseSuccess($result->getResponse(), Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

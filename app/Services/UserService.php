@@ -44,4 +44,16 @@ class UserService
     {
         return $this->userRepository->update($id, $user);
     }
+
+    public function paginateParticipant($paginationDataFromRequest)
+    {
+        $limit = $paginationDataFromRequest['limit'];
+        $sortColumn = $paginationDataFromRequest['sort_column'];
+        $sortType = $paginationDataFromRequest['sort_type'];
+        $filterColumn = $paginationDataFromRequest['filter_column'];
+        $filterData = $paginationDataFromRequest['filter_data'];
+        $searchData = $paginationDataFromRequest['search_data'];
+
+        return $this->userRepository->paginateParticipant($limit, $sortColumn, $sortType, $filterColumn, $filterData, $searchData);
+    }
 }

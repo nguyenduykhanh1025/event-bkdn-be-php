@@ -47,4 +47,30 @@ class UserRepository extends BaseRepository
     // {
     //     return $this->model->where('id', $id)->first();
     // }
+
+    public function paginateParticipant(
+        $limit,
+        $sortColumn = 'id',
+        $sortType = 'asc',
+        $filterColumn = '',
+        $filterData = '',
+        $searchData = ''
+    ) {
+        $query = $this->model::query();
+        $query = $this->model::role(config('constants.ROLE.PARTICIPANT'));
+
+        if ($filterColumn && $filterData) {
+            $query->where($filterColumn, 'like', $filterData);
+        }
+
+        if ($searchData) {
+            $query->where('email', 'like', "%$searchData%");
+        }
+
+        if ($sortColumn && $sortType) {
+            $query->orderBy($sortColumn, $sortType);
+        }
+
+        return $query->paginate($limit);
+    }
 }

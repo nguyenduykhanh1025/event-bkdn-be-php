@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 // * start PUBLIC ROUTE ==========================>
 Route::name('auth')->prefix('auth')->group(base_path('routes/apis/public/AuthApi.php'));
+Route::name('event-user')->prefix('event-users')->group(base_path('routes/apis/public/EventUserApi.php'));
 
 // * start AUTH ROUTE ==========================>
 Route::group(['middleware' => ['verify.authenticate.token', 'verify.authorization.token']], function () {

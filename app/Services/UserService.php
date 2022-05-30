@@ -40,6 +40,11 @@ class UserService
         return $this->userRepository->findById($id);
     }
 
+    public function getByEmail($id)
+    {
+        return $this->userRepository->findByEmail($id);
+    }
+
     public function updateUserById($id, $user)
     {
         return $this->userRepository->update($id, $user);

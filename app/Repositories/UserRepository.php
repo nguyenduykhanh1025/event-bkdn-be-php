@@ -57,7 +57,7 @@ class UserRepository extends BaseRepository
         $searchData = ''
     ) {
         $query = $this->model::query();
-        $query = $this->model::role(config('constants.ROLE.PARTICIPANT'));
+        $query = $this->model::role(config('constants.role.PARTICIPANT'));
 
         if ($filterColumn && $filterData) {
             $query->where($filterColumn, 'like', $filterData);
@@ -72,5 +72,10 @@ class UserRepository extends BaseRepository
         }
 
         return $query->paginate($limit);
+    }
+
+    public function getUserByIdEventEndStatusEvent($idEvent, $statusEvent)
+    {
+        return $this->model->join('event_users', 'users.id', '=', 'event_users.id_user')->where('event_users.status', $statusEvent)->where('event_users.id_event', $idEvent)->get();
     }
 }

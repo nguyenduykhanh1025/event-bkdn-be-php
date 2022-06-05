@@ -9,8 +9,8 @@ class RoleSeeder extends Seeder
 {
     public function run()
     {
-        $this->createRoleIfMissing(config('constants.ROLE.ADMIN'));
-        $this->createRoleIfMissing(config('constants.ROLE.PARTICIPANT'));
+        $this->createRoleIfMissing(config('constants.role.ADMIN'));
+        $this->createRoleIfMissing(config('constants.role.PARTICIPANT'));
     }
 
     protected function createRoleIfMissing($name)

@@ -24,6 +24,10 @@ class BaseRepository
     {
         return $this->model->create($data);
     }
+    public function update($id, $data)
+    {
+        return $this->model->where('id', $id)->update($data);
+    }
     public function deleteById($id)
     {
         $dataFromDB = $this->model->where('id', $id)->first();

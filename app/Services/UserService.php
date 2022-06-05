@@ -61,4 +61,9 @@ class UserService
 
         return $this->userRepository->paginateParticipant($limit, $sortColumn, $sortType, $filterColumn, $filterData, $searchData);
     }
+
+    public function getUsersByIdEventAndStatus($idEvent, $status)
+    {
+        return $this->userRepository->getUserByIdEventEndStatusEvent($idEvent, $status);
+    }
 }

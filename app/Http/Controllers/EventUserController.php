@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DTOs\EventUser\JoinToEventDTO;
+use App\DTOs\EventUser\AcceptedUserJoinToEventDTO;
 use App\DTOs\Pagination\PaginationDTO;
 use App\DTOs\Pagination\PaginationResponseDTO;
 use App\DTOs\User\UpdateUserDTO;
@@ -53,5 +54,31 @@ class EventUserController extends Controller
 
     public function acceptedUserJoinToEvent(Request $request)
     {
+        $validate = (new AcceptedUserJoinToEventDTO())->validateRequest($request);
+        if ($validate['is_error']) {
+            return  $this->responseError($validate['data'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $id = $validate['data'];
+        try {
+            return $this->responseSuccess($this->eventUserService->acceptedUserJoinToEventById($id), Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function rejectedUserJoinToEvent(Request $request)
+    {
+        $validate = (new AcceptedUserJoinToEventDTO())->validateRequest($request);
+        if ($validate['is_error']) {
+            return  $this->responseError($validate['data'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $id = $validate['data'];
+        try {
+            return $this->responseSuccess($this->eventUserService->rejectedUserJoinToEventById($id), Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

@@ -23,4 +23,18 @@ class EventUserService
     {
         return $this->eventUserRepository->findByIdEventAndIdUser($idEvent, $idUser);
     }
+
+    public function acceptedUserJoinToEventById($id)
+    {
+        $payload = null;
+        $payload['status'] = config('constants.EVENT_USER_STATUS.ACCEPTED');
+        return $this->eventUserRepository->update($id, $payload);
+    }
+
+    public function rejectedUserJoinToEventById($id)
+    {
+        $payload = null;
+        $payload['status'] = config('constants.EVENT_USER_STATUS.REJECTED');
+        return $this->eventUserRepository->update($id, $payload);
+    }
 }

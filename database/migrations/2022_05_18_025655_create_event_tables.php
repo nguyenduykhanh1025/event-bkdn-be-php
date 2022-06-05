@@ -27,7 +27,7 @@ class CreateEventTables extends Migration
             $table->text('description')->default(null);
             $table->text('description_participant')->default(null);
             $table->text('description_required')->default(null);
-            $table->string('images_str', 255)->default(null);
+            $table->text('images_str')->default(null);
             $table->string('status', 45)->default(null);
             $table->boolean('is_active')->default(true);
 

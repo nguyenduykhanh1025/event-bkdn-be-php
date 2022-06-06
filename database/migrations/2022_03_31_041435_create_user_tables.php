@@ -17,14 +17,15 @@ class CreateUserTables extends Migration
             $table->id();
             $table->string('email', 45)->unique();
             $table->string('password', 255);
-            $table->string('last_name', 255);
-            $table->string('first_name', 255);
+            $table->string('last_name', 255)->nullable();
+            $table->string('first_name', 255)->nullable();
             $table->boolean('is_active')->default(true);
             $table->dateTime('last_time_login')->useCurrent();
             $table->string('phone_number', 12);
             $table->dateTime('birth_date')->nullable();
-            $table->string('avatar', 255)->default(null);
-            $table->text('info_description')->default(null);
+            $table->string('avatar', 255)->nullable();
+            $table->text('info_description')->nullable();
+            $table->string('id_student', 45)->nullable();
 
             $table->string('created_by', 255)->default('');
             $table->string('updated_by', 255)->default('');

@@ -73,4 +73,19 @@ class EventService
 
         return $this->eventRepository->store($data);
     }
+
+    public function getEventsParticipating($idUser)
+    {
+        return $this->eventRepository->getEventsParticipating($idUser);
+    }
+
+    public function getEventsJoined($idUser)
+    {
+        return $this->eventRepository->getEventsJoined($idUser);
+    }
+
+    public function getEventsInProgressAccept($idUser)
+    {
+        return $this->eventRepository->getEventsInProgressAccept($idUser);
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DTOs\Auth\AuthLoginWithEmailAndPasswordDTO;
 use App\DTOs\Auth\NewAdminDTO;
+use App\DTOs\Auth\NewParticipantDTO;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\Controller;
@@ -26,6 +27,20 @@ class AuthController extends Controller
         }
 
         $userCreated = $this->authService->createAdminAccountFromRequestData($request->all());
+        if ($userCreated == null) {
+            return $this->responseError(config('constants.message.auth.CREATED_USER_FAILED'), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        return $this->responseSuccess($userCreated, Response::HTTP_CREATED);
+    }
+
+    public function registerParticipantAccount(Request $request)
+    {
+        $validate = (new NewParticipantDTO())->validateRequest($request);
+        if ($validate['is_error']) {
+            return  $this->responseError($validate['data'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $userCreated = $this->authService->createParticipantFromRequestData($request->all());
         if ($userCreated == null) {
             return $this->responseError(config('constants.message.auth.CREATED_USER_FAILED'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }

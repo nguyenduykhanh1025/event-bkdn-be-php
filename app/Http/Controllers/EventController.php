@@ -127,6 +127,36 @@ class EventController extends Controller
         }
     }
 
+    public function getEventsParticipating(Request $request) {
+        $idUser = auth()->user()['id'];
+        try {
+            $dataResponse = $this->eventService->getEventsParticipating($idUser);
+            return $this->responseSuccess($dataResponse);
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getEventsJoined(Request $request) {
+        $idUser = auth()->user()['id'];
+        try {
+            $dataResponse = $this->eventService->getEventsJoined($idUser);
+            return $this->responseSuccess($dataResponse);
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getEventsInProgressAccept(Request $request) {
+        $idUser = auth()->user()['id'];
+        try {
+            $dataResponse = $this->eventService->getEventsInProgressAccept($idUser);
+            return $this->responseSuccess($dataResponse);
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function create(Request $request)
     {
         $validate = (new NewEventDTO())->validateRequest($request);

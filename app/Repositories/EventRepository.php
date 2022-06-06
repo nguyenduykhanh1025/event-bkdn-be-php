@@ -133,4 +133,27 @@ class EventRepository extends BaseRepository
 
         return $query->paginate($limit);
     }
+
+    public function getEventsParticipating($idUser)
+    {
+        return $this->model->join('event_users', 'events.id', '=', 'event_users.id_event')
+            ->where('event_users.id_user', $idUser)
+            ->where('event_users.status', config('constants.EVENT_USER_STATUS.ACCEPTED'))
+            ->where('events.end_at', '<=', Carbon::now())->get();
+    }
+
+    public function getEventsJoined($idUser)
+    {
+        return $this->model->join('event_users', 'events.id', '=', 'event_users.id_event')
+            ->where('event_users.id_user', $idUser)
+            ->where('event_users.status', config('constants.EVENT_USER_STATUS.ACCEPTED'))
+            ->where('events.end_at', '>', Carbon::now())->get();
+    }
+
+    public function getEventsInProgressAccept($idUser)
+    {
+        return $this->model->join('event_users', 'events.id', '=', 'event_users.id_event')
+            ->where('event_users.id_user', $idUser)
+            ->where('event_users.status', config('constants.EVENT_USER_STATUS.IN_PROGRESS'))->get();
+    }
 }

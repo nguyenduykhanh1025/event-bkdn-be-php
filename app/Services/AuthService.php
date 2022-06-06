@@ -32,6 +32,23 @@ class AuthService
         }
     }
 
+    public function createParticipantFromRequestData($request)
+    {
+        $dataNeedCreate = $request;
+        $dataNeedCreate['password'] = Hash::make($request['password']);
+
+        try {
+            $user = $this->userRepository->store($dataNeedCreate);
+            echo config('constants.role.PARTICIPANT');
+            $user->assignRole(config('constants.role.PARTICIPANT'));
+            return $user;
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            echo $e->getMessage();
+            return null;
+        }
+    }
+
     public function checkUsernameIsExist($username)
     {
         if ($this->userRepository->getByUsername(($username)) == null) {

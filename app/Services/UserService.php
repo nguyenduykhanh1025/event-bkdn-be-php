@@ -66,4 +66,9 @@ class UserService
     {
         return $this->userRepository->getUserByIdEventEndStatusEvent($idEvent, $status);
     }
+
+    public function getUsersByIdEvent($idEvent)
+    {
+        return $this->userRepository->getUserByIdEvent($idEvent);
+    }
 }

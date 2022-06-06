@@ -78,4 +78,9 @@ class UserRepository extends BaseRepository
     {
         return $this->model->join('event_users', 'users.id', '=', 'event_users.id_user')->where('event_users.status', $statusEvent)->where('event_users.id_event', $idEvent)->get();
     }
+
+    public function getUserByIdEvent($idEvent)
+    {
+        return $this->model->join('event_users', 'users.id', '=', 'event_users.id_user')->where('event_users.id_event', $idEvent)->get();
+    }
 }

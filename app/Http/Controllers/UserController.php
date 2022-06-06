@@ -131,12 +131,23 @@ class UserController extends Controller
 
     public function getUsersByIdEventAndStatus(Request $request)
     {
-        // $routeParameters = $request->route()->parameters();
         $status = $request->all()['status'];
         $idEvent = $request->all()['idEvent'];
 
         try {
             $resFromDB = $this->userService->getUsersByIdEventAndStatus($idEvent, $status);
+            return $this->responseSuccess($resFromDB);
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getUsersByIdEvent(Request $request)
+    {
+        $idEvent = $request->all()['idEvent'];
+
+        try {
+            $resFromDB = $this->userService->getUsersByIdEvent($idEvent);
             return $this->responseSuccess($resFromDB);
         } catch (\Exception $e) {
             return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);

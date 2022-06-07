@@ -37,4 +37,9 @@ class EventUserService
         $payload['status'] = config('constants.EVENT_USER_STATUS.REJECTED');
         return $this->eventUserRepository->update($id, $payload);
     }
+
+    public function getUsersExistInTimeEvent($startDate, $endDate, $idUser, $idEvent)
+    {
+        return $this->eventUserRepository->findUsersExistInTimeEvent($startDate, $endDate, $idUser, $idEvent);
+    }
 }

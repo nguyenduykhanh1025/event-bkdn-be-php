@@ -11,17 +11,20 @@ use Illuminate\Http\Request;
 use App\Services\UserService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\Controller;
+use App\Services\EventService;
 use App\Services\EventUserService;
 
 class EventUserController extends Controller
 {
     private $eventUserService;
     private $userService;
+    private $eventService;
 
-    public function __construct(EventUserService $eventUserService, UserService $userService)
+    public function __construct(EventUserService $eventUserService, UserService $userService, EventService $eventService)
     {
         $this->eventUserService = $eventUserService;
         $this->userService = $userService;
+        $this->eventService = $eventService;
     }
 
     public function joinToEvent(Request $request)
@@ -34,6 +37,13 @@ class EventUserController extends Controller
         $userFromDB =  $this->userService->getByEmail($payload['email']);
         if (empty($userFromDB)) {
             return $this->responseError('user_does_not_exist', Response::HTTP_BAD_REQUEST);
+        }
+
+        $eventFromDB = $this->eventService->getById($payload['id_event']);
+        $usersExistInTimeEvent = $this->eventUserService->getUsersExistInTimeEvent($eventFromDB['start_at'], $eventFromDB['end_at'],  $userFromDB['id'], $payload['id_event']);
+        print_r($usersExistInTimeEvent);
+        if (count($usersExistInTimeEvent) != 0) {
+            return $this->responseError('exist_event_in_time', Response::HTTP_BAD_REQUEST);
         }
 
         $eventUserIsExist = $this->eventUserService->getByIdEventAndIdUser($payload['id_event'], $userFromDB['id']);

@@ -34,6 +34,6 @@ class BaseRepository
         if (empty($dataFromDB)) {
             return null;
         }
-        return $this->model->destroy($dataFromDB);
+        return $this->model::destroy($id);
     }
 }

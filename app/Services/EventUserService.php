@@ -42,4 +42,9 @@ class EventUserService
     {
         return $this->eventUserRepository->findUsersExistInTimeEvent($startDate, $endDate, $idUser, $idEvent);
     }
+
+    public function removeById($id)
+    {
+        return $this->eventUserRepository->deleteById($id);
+    }
 }

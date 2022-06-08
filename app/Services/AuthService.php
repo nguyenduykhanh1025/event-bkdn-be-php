@@ -22,12 +22,10 @@ class AuthService
 
         try {
             $user = $this->userRepository->create($dataNeedCreate);
-            echo config('constants.role.ADMIN');
             $user->assignRole(config('constants.role.ADMIN'));
             return $user;
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            echo $e->getMessage();
             return null;
         }
     }
@@ -39,12 +37,10 @@ class AuthService
 
         try {
             $user = $this->userRepository->store($dataNeedCreate);
-            echo config('constants.role.PARTICIPANT');
             $user->assignRole(config('constants.role.PARTICIPANT'));
             return $user;
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            echo $e->getMessage();
             return null;
         }
     }

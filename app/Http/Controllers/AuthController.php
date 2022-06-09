@@ -44,6 +44,7 @@ class AuthController extends Controller
         if ($userCreated == null) {
             return $this->responseError(config('constants.message.auth.CREATED_USER_FAILED'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+
         return $this->responseSuccess($userCreated, Response::HTTP_CREATED);
     }
 

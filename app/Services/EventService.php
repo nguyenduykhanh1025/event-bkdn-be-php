@@ -88,4 +88,9 @@ class EventService
     {
         return $this->eventRepository->getEventsInProgressAccept($idUser);
     }
+
+    public function getEventsInComming($idUser)
+    {
+        return $this->eventRepository->getEventsInComming($idUser);
+    }
 }

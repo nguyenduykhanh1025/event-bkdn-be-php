@@ -157,6 +157,16 @@ class EventController extends Controller
         }
     }
 
+    public function getEventsInComming(Request $request) {
+        $idUser = auth()->user()['id'];
+        try {
+            $dataResponse = $this->eventService->getEventsInComming($idUser);
+            return $this->responseSuccess($dataResponse);
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function create(Request $request)
     {
         $validate = (new NewEventDTO())->validateRequest($request);

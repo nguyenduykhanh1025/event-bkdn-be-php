@@ -156,4 +156,10 @@ class EventRepository extends BaseRepository
             ->where('event_users.id_user', $idUser)
             ->where('event_users.status', config('constants.EVENT_USER_STATUS.IN_PROGRESS'))->get();
     }
+
+    public function getEventsInComming()
+    {
+        return $this->model->select('events.*', 'event_users.id_user')->leftJoin('event_users', 'events.id', '=', 'event_users.id_event')
+            ->where('events.start_at', '>', Carbon::now())->get();
+    }
 }

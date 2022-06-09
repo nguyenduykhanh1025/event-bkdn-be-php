@@ -41,6 +41,7 @@ class AuthService
             return $user;
         } catch (\Exception $e) {
             Log::error($e->getMessage());
+            echo $e->getMessage();
             return null;
         }
     }

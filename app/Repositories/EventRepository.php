@@ -162,4 +162,17 @@ class EventRepository extends BaseRepository
         return $this->model->select('events.*', 'event_users.id_user')->leftJoin('event_users', 'events.id', '=', 'event_users.id_event')
             ->where('events.start_at', '>', Carbon::now())->get();
     }
+
+    public function getEventsJoin($idUser)
+    {
+        return $this->model->select('events.*', 'event_users.status as event_users_status')->join('event_users', 'events.id', '=', 'event_users.id_event')
+            ->where('event_users.id_user', $idUser)->get();
+    }
+
+    public function getEventsNewNotExistUser($idUser)
+    {
+        return $this->model->select('events.*', 'event_users.status as event_users_status')->leftJoin('event_users', 'events.id', '=', 'event_users.id_event')
+            ->where('event_users.id_user', '<>', $idUser)->orWhereNull('event_users.id_user')
+            ->where('events.start_at', '>', Carbon::now())->get();
+    }
 }

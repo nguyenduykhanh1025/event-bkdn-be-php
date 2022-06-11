@@ -127,7 +127,8 @@ class EventController extends Controller
         }
     }
 
-    public function getEventsParticipating(Request $request) {
+    public function getEventsParticipating(Request $request)
+    {
         $idUser = auth()->user()['id'];
         try {
             $dataResponse = $this->eventService->getEventsParticipating($idUser);
@@ -137,7 +138,8 @@ class EventController extends Controller
         }
     }
 
-    public function getEventsJoined(Request $request) {
+    public function getEventsJoined(Request $request)
+    {
         $idUser = auth()->user()['id'];
         try {
             $dataResponse = $this->eventService->getEventsJoined($idUser);
@@ -147,7 +149,8 @@ class EventController extends Controller
         }
     }
 
-    public function getEventsInProgressAccept(Request $request) {
+    public function getEventsInProgressAccept(Request $request)
+    {
         $idUser = auth()->user()['id'];
         try {
             $dataResponse = $this->eventService->getEventsInProgressAccept($idUser);
@@ -157,7 +160,8 @@ class EventController extends Controller
         }
     }
 
-    public function getEventsInComming(Request $request) {
+    public function getEventsInComming(Request $request)
+    {
         $idUser = auth()->user()['id'];
         try {
             $dataResponse = $this->eventService->getEventsInComming($idUser);
@@ -179,6 +183,28 @@ class EventController extends Controller
                 $this->eventService->create($validate['data']),
                 Response::HTTP_OK
             );
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getEventsJoin(Request $request)
+    {
+        $idUser = auth()->user()['id'];
+        try {
+            $dataResponse = $this->eventService->getEventsJoin($idUser);
+            return $this->responseSuccess($dataResponse);
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getEventsNewNotExistUser(Request $request)
+    {
+        $idUser = auth()->user()['id'];
+        try {
+            $dataResponse = $this->eventService->getEventsNewNotExistUser($idUser);
+            return $this->responseSuccess($dataResponse);
         } catch (\Exception $e) {
             return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }

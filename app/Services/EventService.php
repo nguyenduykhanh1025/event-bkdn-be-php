@@ -93,4 +93,14 @@ class EventService
     {
         return $this->eventRepository->getEventsInComming($idUser);
     }
+
+    public function getEventsJoin($idUser)
+    {
+        return $this->eventRepository->getEventsJoin($idUser);
+    }
+
+    public function getEventsNewNotExistUser($idUser)
+    {
+        return $this->eventRepository->getEventsNewNotExistUser($idUser);
+    }
 }

@@ -68,8 +68,9 @@ class EventUserController extends Controller
         if ($validate['is_error']) {
             return  $this->responseError($validate['data'], Response::HTTP_BAD_REQUEST);
         }
+        $idUser = auth()->user()['id'];
         $payload = $validate['data'];
-        $eventUsersFromDB =  $this->eventUserService->getByIdEventAndIdUser($payload['id_event'], $payload['id_user']);
+        $eventUsersFromDB =  $this->eventUserService->getByIdEventAndIdUser($payload['id_event'], $idUser);
         if (!count($eventUsersFromDB)) {
             return;
         }

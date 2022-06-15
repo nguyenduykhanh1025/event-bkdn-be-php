@@ -103,4 +103,34 @@ class EventService
     {
         return $this->eventRepository->getEventsNewNotExistUser($idUser);
     }
+
+    public function addCountRegisteredByIdEvent($idEvent)
+    {
+        $eventFromDB = $this->eventRepository->findById($idEvent);
+        $countRegistered = 0;
+        if (empty($eventFromDB['count_registered'])) {
+            $eventFromDB['count_registered'] = 0;
+        }
+        $countRegistered = $eventFromDB['count_registered'] + 1;
+
+        $payload['id'] = $idEvent;
+        $payload['count_registered'] = $countRegistered;
+
+        $this->eventRepository->update($idEvent, $payload);
+    }
+
+    public function addCountParticipatedByIdEvent($idEvent)
+    {
+        $eventFromDB = $this->eventRepository->findById($idEvent);
+        $countRegistered = 0;
+        if (empty($eventFromDB['count_participated'])) {
+            $eventFromDB['count_participated'] = 0;
+        }
+        $countRegistered = $eventFromDB['count_participated'] + 1;
+
+        $payload['id'] = $idEvent;
+        $payload['count_participated'] = $countRegistered;
+
+        $this->eventRepository->update($idEvent, $payload);
+    }
 }

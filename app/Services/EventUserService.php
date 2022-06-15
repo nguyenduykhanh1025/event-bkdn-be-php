@@ -14,6 +14,11 @@ class EventUserService
         $this->eventUserRepository = $eventUserRepository;
     }
 
+    public function getById($id)
+    {
+        return $this->eventUserRepository->findById($id);
+    }
+
     public function create($data)
     {
         return $this->eventUserRepository->store($data);

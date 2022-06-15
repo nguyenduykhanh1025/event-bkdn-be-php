@@ -56,7 +56,10 @@ class EventUserController extends Controller
         $dataNeedCreate['status'] = config('constants.EVENT_USER_STATUS.IN_PROGRESS');
 
         try {
-            return $this->responseSuccess($this->eventUserService->create($dataNeedCreate), Response::HTTP_OK);
+            $resFromDB = $this->eventUserService->create($dataNeedCreate);
+            $this->eventService->addCountRegisteredByIdEvent($payload['id_event']);
+
+            return $this->responseSuccess($resFromDB, Response::HTTP_OK);
         } catch (\Exception $e) {
             return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -80,7 +83,6 @@ class EventUserController extends Controller
         } catch (\Exception $e) {
             return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
     }
 
     public function acceptedUserJoinToEvent(Request $request)
@@ -92,7 +94,11 @@ class EventUserController extends Controller
 
         $id = $validate['data'];
         try {
-            return $this->responseSuccess($this->eventUserService->acceptedUserJoinToEventById($id), Response::HTTP_OK);
+            $eventUserFromDB = $this->eventUserService->getById($id);
+            $resFromDB = $this->eventUserService->acceptedUserJoinToEventById($id);
+            $this->eventService->addCountParticipatedByIdEvent($eventUserFromDB['id_event']);
+            
+            return $this->responseSuccess($resFromDB, Response::HTTP_OK);
         } catch (\Exception $e) {
             return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }

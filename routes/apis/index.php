@@ -21,4 +21,5 @@ Route::group(['middleware' => ['verify.authenticate.token', 'verify.authorizatio
      */
     Route::name('participant-event')->prefix('participant/events')->group(base_path('routes/apis/participant/EventApi.php'));
     Route::name('participant-event-user')->prefix('participant/event-users')->group(base_path('routes/apis/participant/EventUserApi.php'));
+    Route::name('participant-journal')->prefix('participant/journals')->group(base_path('routes/apis/participant/JournalApi.php'));
 });

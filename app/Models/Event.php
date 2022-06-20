@@ -25,6 +25,7 @@ class Event extends Model
         'images_str',
         'status',
         'is_active',
+        'point_number',
 
         'created_by',
         'updated_by',

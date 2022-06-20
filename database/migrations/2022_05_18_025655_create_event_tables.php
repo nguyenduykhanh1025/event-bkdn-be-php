@@ -30,6 +30,7 @@ class CreateEventTables extends Migration
             $table->text('images_str')->default(null);
             $table->string('status', 45)->default(null);
             $table->boolean('is_active')->default(true);
+            $table->integer('point_number')->nullable();
 
             $table->timestamps();
         });

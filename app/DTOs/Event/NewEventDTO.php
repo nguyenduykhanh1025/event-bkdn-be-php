@@ -15,7 +15,8 @@ class NewEventDTO extends DTO
         'start_at' => 'required',
         'end_at' => 'required',
         'address' => 'required',
-        'images_str' => 'required'
+        'images_str' => 'required',
+        'point_number' => 'nullable'
     ];
 
     public function __construct()

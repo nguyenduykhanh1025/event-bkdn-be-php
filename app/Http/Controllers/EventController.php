@@ -209,4 +209,16 @@ class EventController extends Controller
             return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getEventsJoinByIdUser(Request $request)
+    {
+        $idUser = $request->all()['id_user'];
+
+        try {
+            $dataResponse = $this->eventService->getEventsJoin($idUser);
+            return $this->responseSuccess($dataResponse);
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

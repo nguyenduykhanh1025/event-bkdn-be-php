@@ -74,8 +74,7 @@ class UserController extends Controller
 
     public function getUserById(Request $request)
     {
-        $routeParameters = $request->route()->parameters();
-        $userId = $routeParameters['id'];
+        $userId = $request->all()['id'];
 
         $userFromDB = $this->userService->getUserById($userId);
         if (!$userFromDB) {

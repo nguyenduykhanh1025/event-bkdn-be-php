@@ -74,6 +74,14 @@ class EventService
         return $this->eventRepository->store($data);
     }
 
+    public function update($data)
+    {
+        $data['type'] = config('constants.EVENT_TYPE.PARTY');
+        $data['status'] = config('constants.EVENT_STATUS.INCOMING_EVENT');
+
+        return $this->eventRepository->update($data['id'], $data);
+    }
+
     public function getEventsParticipating($idUser)
     {
         return $this->eventRepository->getEventsParticipating($idUser);

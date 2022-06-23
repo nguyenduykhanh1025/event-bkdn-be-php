@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Services\UserService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -84,7 +85,7 @@ class UserController extends Controller
         return $this->responseSuccess($userFromDB);
     }
 
-    public function a(Request $request)
+    public function updateUserById(Request $request)
     {
         $routeParameters = $request->route()->parameters();
 
@@ -154,12 +155,27 @@ class UserController extends Controller
         }
     }
 
-    public function updatePassword(Request $request) {
+    public function updatePassword(Request $request)
+    {
         $validate = (new ChangePasswordDTO())->validateRequest($request);
         if ($validate['is_error']) {
             return  $this->responseError($validate['data'], Response::HTTP_BAD_REQUEST);
         }
 
-        //  Hash::make($request['password'])
+        $dataFromRequest = $validate['data'];
+        $userFromDB = $this->userService->getUserById($dataFromRequest['id']);
+        if (!Hash::check($dataFromRequest['current_password'],  $userFromDB['password'])) {
+            return  $this->responseError('current_pass_not_match', Response::HTTP_BAD_REQUEST);
+        }
+
+        $userNeedUpdate = null;
+        $userNeedUpdate['id'] = $userFromDB['id'];
+        $userNeedUpdate['password'] = Hash::make($dataFromRequest['new_password']);
+
+        try {
+            return $this->responseSuccess($this->userService->updateUserById($userFromDB['id'], $userNeedUpdate));
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

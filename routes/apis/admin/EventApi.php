@@ -11,3 +11,4 @@ Route::get('get-events-join-by-id-user', 'App\Http\Controllers\EventController@g
 
 Route::get('{id}', 'App\Http\Controllers\EventController@show');
 Route::post('', 'App\Http\Controllers\EventController@create');
+Route::put('', 'App\Http\Controllers\EventController@update');

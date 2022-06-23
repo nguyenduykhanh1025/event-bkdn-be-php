@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DTOs\Event\NewEventDTO;
+use App\DTOs\Event\UpdateEventDTO;
 use App\DTOs\Pagination\PaginationDTO;
 use App\DTOs\Pagination\PaginationResponseDTO;
 use App\DTOs\User\UpdateUserDTO;
@@ -181,6 +182,23 @@ class EventController extends Controller
         try {
             return $this->responseSuccess(
                 $this->eventService->create($validate['data']),
+                Response::HTTP_OK
+            );
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function update(Request $request)
+    {
+        $validate = (new UpdateEventDTO())->validateRequest($request);
+        if ($validate['is_error']) {
+            return  $this->responseError($validate['data'], Response::HTTP_BAD_REQUEST);
+        }
+
+        try {
+            return $this->responseSuccess(
+                $this->eventService->update($validate['data']),
                 Response::HTTP_OK
             );
         } catch (\Exception $e) {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DTOs\Pagination\PaginationDTO;
 use App\DTOs\Pagination\PaginationResponseDTO;
+use App\DTOs\User\ChangePasswordDTO;
 use App\DTOs\User\UpdateUserDTO;
 use Illuminate\Http\Request;
 use App\Services\UserService;
@@ -83,7 +84,7 @@ class UserController extends Controller
         return $this->responseSuccess($userFromDB);
     }
 
-    public function updateUserById(Request $request)
+    public function a(Request $request)
     {
         $routeParameters = $request->route()->parameters();
 
@@ -151,5 +152,14 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public function updatePassword(Request $request) {
+        $validate = (new ChangePasswordDTO())->validateRequest($request);
+        if ($validate['is_error']) {
+            return  $this->responseError($validate['data'], Response::HTTP_BAD_REQUEST);
+        }
+
+        //  Hash::make($request['password'])
     }
 }

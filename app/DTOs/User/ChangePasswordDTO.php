@@ -1,14 +1,15 @@
 <?php
 
-namespace App\DTOs\Auth;
+namespace App\DTOs\User;
 
 use App\DTOs\DTO;
 
-class AuthLoginWithEmailAndPasswordDTO extends DTO
+class ChangePasswordDTO extends DTO
 {
     private $validate_request_schema = [
-        'email' => 'required|email',
-        'password' => 'required'
+        'id' => 'required',
+        'current_password' => 'required',
+        'new_password' => 'required',
     ];
 
     public function __construct()

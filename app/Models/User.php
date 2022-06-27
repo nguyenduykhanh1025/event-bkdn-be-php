@@ -27,6 +27,7 @@ class User extends Authenticatable implements JWTSubject
         'avatar',
         'info_description',
         'id_student',
+        'exponent_push_token',
 
         'created_by',
         'updated_by',

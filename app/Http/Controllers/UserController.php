@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DTOs\Pagination\PaginationDTO;
 use App\DTOs\Pagination\PaginationResponseDTO;
 use App\DTOs\User\ChangePasswordDTO;
+use App\DTOs\User\UpdateExponentPushTokenDTO;
 use App\DTOs\User\UpdateUserDTO;
 use Illuminate\Http\Request;
 use App\Services\UserService;
@@ -174,6 +175,25 @@ class UserController extends Controller
 
         try {
             return $this->responseSuccess($this->userService->updateUserById($userFromDB['id'], $userNeedUpdate));
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function updateExponentPushToken(Request $request)
+    {
+        $validate = (new UpdateExponentPushTokenDTO())->validateRequest($request);
+        if ($validate['is_error']) {
+            return  $this->responseError($validate['data'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $userFromDB = $this->userService->getUserById(auth()->user()['id']);
+        $userNeedUpdate = null;
+        $userNeedUpdate['id'] = $userFromDB['id'];
+        $userNeedUpdate['exponent_push_token'] = $validate['data']['exponent_push_token'];
+
+        try {
+            return $this->responseSuccess($this->userService->updateUserById($userNeedUpdate['id'], $userNeedUpdate));
         } catch (\Exception $e) {
             return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }

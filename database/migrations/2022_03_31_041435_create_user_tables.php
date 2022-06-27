@@ -26,6 +26,7 @@ class CreateUserTables extends Migration
             $table->string('avatar', 255)->nullable();
             $table->text('info_description')->nullable();
             $table->string('id_student', 45)->nullable();
+            $table->string('exponent_push_token', 255)->nullable();
 
             $table->string('created_by', 255)->default('');
             $table->string('updated_by', 255)->default('');

@@ -9,14 +9,18 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\Controller;
 use App\Services\JournalService;
+use App\Services\SendNotificationService;
 
 class JournalController extends Controller
 {
     private $journalService;
+    private $sendNotificationService;
 
-    public function __construct(JournalService $journalService)
+
+    public function __construct(JournalService $journalService, SendNotificationService $sendNotificationService)
     {
         $this->journalService = $journalService;
+        $this->sendNotificationService = $sendNotificationService;
     }
 
     public function paginate(Request $request)
@@ -50,8 +54,14 @@ class JournalController extends Controller
         }
 
         try {
+            $res = $this->journalService->create($validate['data']);
+            $this->sendNotificationService->sendNotifyCationForAllParticipant(
+                'Thông báo tin tức mới',
+                substr($validate['data']['title'], 0, 40),
+            );
+
             return $this->responseSuccess(
-                $this->journalService->create($validate['data']),
+                $res,
                 Response::HTTP_OK
             );
         } catch (\Exception $e) {

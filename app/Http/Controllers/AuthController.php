@@ -9,14 +9,17 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\Controller;
 use App\Services\AuthService;
+use App\Services\SendNotificationService;
 
 class AuthController extends Controller
 {
     private $authService;
+    private $sendNotificationService;
 
-    public function __construct(AuthService $authService)
+    public function __construct(AuthService $authService, SendNotificationService $sendNotificationService)
     {
         $this->authService = $authService;
+        $this->sendNotificationService = $sendNotificationService;
     }
 
     public function registerAdminAccount(Request $request)

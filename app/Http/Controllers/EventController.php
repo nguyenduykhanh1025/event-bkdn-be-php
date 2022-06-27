@@ -12,14 +12,17 @@ use App\Services\UserService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\Controller;
 use App\Services\EventService;
+use App\Services\SendNotificationService;
 
 class EventController extends Controller
 {
     private $eventService;
+    private $sendNotificationService;
 
-    public function __construct(EventService $eventService)
+    public function __construct(EventService $eventService, SendNotificationService $sendNotificationService)
     {
         $this->eventService = $eventService;
+        $this->sendNotificationService = $sendNotificationService;
     }
 
     public function paginate(Request $request)
@@ -180,8 +183,13 @@ class EventController extends Controller
         }
 
         try {
+            $res = $this->eventService->create($validate['data']);
+            $this->sendNotificationService->sendNotifyCationForAllParticipant(
+                'Thông báo sự kiện mới sắp diễn ra',
+                substr($validate['data']['description'], 0, 40),
+            );
             return $this->responseSuccess(
-                $this->eventService->create($validate['data']),
+                $res,
                 Response::HTTP_OK
             );
         } catch (\Exception $e) {

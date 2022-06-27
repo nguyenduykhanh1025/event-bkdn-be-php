@@ -14,18 +14,21 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\Controller;
 use App\Services\EventService;
 use App\Services\EventUserService;
+use App\Services\SendNotificationService;
 
 class EventUserController extends Controller
 {
     private $eventUserService;
     private $userService;
     private $eventService;
+    private $sendNotificationService;
 
-    public function __construct(EventUserService $eventUserService, UserService $userService, EventService $eventService)
+    public function __construct(EventUserService $eventUserService, UserService $userService, EventService $eventService, SendNotificationService $sendNotificationService)
     {
         $this->eventUserService = $eventUserService;
         $this->userService = $userService;
         $this->eventService = $eventService;
+        $this->sendNotificationService = $sendNotificationService;
     }
 
     public function joinToEvent(Request $request)
@@ -97,7 +100,13 @@ class EventUserController extends Controller
             $eventUserFromDB = $this->eventUserService->getById($id);
             $resFromDB = $this->eventUserService->acceptedUserJoinToEventById($id);
             $this->eventService->addCountParticipatedByIdEvent($eventUserFromDB['id_event']);
-            
+
+            $this->sendNotificationService->sendNotifyCationForAllParticipant(
+                'Thông báo đơn xét duyệt tham gia sự kiện.',
+                'Bạn đã được ban tổ chức chấp nhận tham gia sự kiện.',
+            );
+
+
             return $this->responseSuccess($resFromDB, Response::HTTP_OK);
         } catch (\Exception $e) {
             return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -113,6 +122,11 @@ class EventUserController extends Controller
 
         $id = $validate['data'];
         try {
+            $this->sendNotificationService->sendNotifyCationForAllParticipant(
+                'Thông báo đơn xét duyệt tham gia sự kiện.',
+                'Bạn bị từ chối tham gia sự kiện.',
+            );
+
             return $this->responseSuccess($this->eventUserService->rejectedUserJoinToEventById($id), Response::HTTP_OK);
         } catch (\Exception $e) {
             return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);

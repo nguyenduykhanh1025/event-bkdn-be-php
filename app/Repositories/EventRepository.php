@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Event;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class EventRepository extends BaseRepository
 {
@@ -174,5 +175,18 @@ class EventRepository extends BaseRepository
         return $this->model->select('events.*', 'event_users.status as event_users_status')->leftJoin('event_users', 'events.id', '=', 'event_users.id_event')
             ->where('event_users.id_user', '<>', $idUser)->orWhereNull('event_users.id_user')
             ->where('events.start_at', '>', Carbon::now())->get();
+    }
+
+    public function getCount()
+    {
+        return $this->model->count();
+    }
+
+    public function findSumPointNumber()
+    {
+        return DB::select(
+            'SELECT sum(point_number) AS sum_point_number FROM events
+            '
+        );
     }
 }

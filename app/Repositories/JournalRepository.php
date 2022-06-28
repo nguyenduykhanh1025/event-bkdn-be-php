@@ -32,6 +32,8 @@ class JournalRepository extends BaseRepository
             $query->where($filterColumn, 'like', $filterData);
         }
 
+        $query->where('is_active', '=', 1);
+
         if ($searchData) {
             // $query->where('email', 'like', "%$searchData%");
         }
@@ -43,5 +45,10 @@ class JournalRepository extends BaseRepository
         }
 
         return $query->paginate($limit);
+    }
+
+    public function getCount()
+    {
+        return $this->model->count();
     }
 }

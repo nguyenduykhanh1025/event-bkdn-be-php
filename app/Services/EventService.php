@@ -141,4 +141,14 @@ class EventService
 
         $this->eventRepository->update($idEvent, $payload);
     }
+
+    public function getCount()
+    {
+        return $this->eventRepository->getCount();
+    }
+
+    public function getSumPointNumber()
+    {
+        return $this->eventRepository->findSumPointNumber();
+    }
 }

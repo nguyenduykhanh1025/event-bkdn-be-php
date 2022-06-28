@@ -45,8 +45,13 @@ class JournalService
     public function updateToIsActiveById($id, $isActive)
     {
         $dataFromDb['is_active'] = $isActive;
-        $dataFromDb['id'] = 1;
+        $dataFromDb['id'] = $id;
 
-        $this->journalRepository->store($dataFromDb);
+        $this->journalRepository->update($id, $dataFromDb);
+    }
+
+    public function getCount()
+    {
+        return $this->journalRepository->getCount();
     }
 }

@@ -88,4 +88,9 @@ class UserRepository extends BaseRepository
     {
         return $this->model->whereNotNull('exponent_push_token')->get();
     }
+
+    public function getCountParticipant()
+    {
+        return $this->model::role(config('constants.role.PARTICIPANT'))->count();
+    }
 }

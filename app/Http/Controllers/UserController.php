@@ -198,4 +198,15 @@ class UserController extends Controller
             return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getUserProfileByToken(Request $request)
+    {
+        $userFromDB = $this->userService->getUserProfileByIdAndSumPointNumberAndCountEventJoin(auth()->user()['id']);
+
+        try {
+            return $this->responseSuccess($userFromDB);
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -2,15 +2,18 @@
 
 namespace App\Services;
 
+use App\Repositories\EventUserRepository;
 use App\Repositories\UserRepository;
 
 class UserService
 {
     private $userRepository;
+    private $eventUserRepository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, EventUserRepository $eventUserRepository)
     {
         $this->userRepository = $userRepository;
+        $this->eventUserRepository = $eventUserRepository;
     }
 
     public function paginate($paginationDataFromRequest)
@@ -70,5 +73,18 @@ class UserService
     public function getUsersByIdEvent($idEvent)
     {
         return $this->userRepository->getUserByIdEvent($idEvent);
+    }
+
+    public function getUserProfileByIdAndSumPointNumberAndCountEventJoin($idUser)
+    {
+        $userFromDB = $this->getUserById($idUser);
+        $userFromDB['sum_point_number'] = $this->eventUserRepository->findSumPointNumberByIdUser($idUser)[0];
+        $userFromDB['sum_event_join'] = count($this->eventUserRepository->findAllByIdUser($idUser));
+        return $userFromDB;
+    }
+
+    public function getCountParticipant()
+    {
+        return $this->userRepository->getCountParticipant();
     }
 }

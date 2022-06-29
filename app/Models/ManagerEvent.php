@@ -5,28 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
+class ManagerEvent extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'id',
-        'title',
-        'type',
-        'count_need_participate',
-        'count_participated',
-        'count_registered',
-        'start_at',
-        'end_at',
-        'address',
+        'name',
+        'email',
+        'phone_number',
         'description',
-        'description_participant',
-        'description_required',
-        'images_str',
-        'status',
-        'is_active',
-        'point_number',
-        'id_manager_event',
+        'sex',
+        'avatar',
 
         'created_by',
         'updated_by',

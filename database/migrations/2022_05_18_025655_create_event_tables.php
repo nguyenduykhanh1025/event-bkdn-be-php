@@ -31,6 +31,7 @@ class CreateEventTables extends Migration
             $table->string('status', 45)->default(null);
             $table->boolean('is_active')->default(true);
             $table->integer('point_number')->nullable();
+            $table->integer('id_manager_event')->nullable();
 
             $table->timestamps();
         });

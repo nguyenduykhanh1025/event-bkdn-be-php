@@ -12,17 +12,23 @@ use App\Services\UserService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\Controller;
 use App\Services\EventService;
+use App\Services\ManagerEventService;
 use App\Services\SendNotificationService;
 
 class EventController extends Controller
 {
     private $eventService;
     private $sendNotificationService;
+    private $managerEventService;
 
-    public function __construct(EventService $eventService, SendNotificationService $sendNotificationService)
-    {
+    public function __construct(
+        EventService $eventService,
+        SendNotificationService $sendNotificationService,
+        ManagerEventService $managerEventService
+    ) {
         $this->eventService = $eventService;
         $this->sendNotificationService = $sendNotificationService;
+        $this->managerEventService = $managerEventService;
     }
 
     public function paginate(Request $request)
@@ -125,6 +131,7 @@ class EventController extends Controller
         $eventId = $routeParameters['id'];
         try {
             $dataResponse = $this->eventService->getById($eventId);
+            $dataResponse['manager_event'] = $this->managerEventService->getById($dataResponse['id_manager_event']);
             return $this->responseSuccess($dataResponse);
         } catch (\Exception $e) {
             return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);

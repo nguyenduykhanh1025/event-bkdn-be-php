@@ -87,4 +87,9 @@ class UserService
     {
         return $this->userRepository->getCountParticipant();
     }
+
+    public function update($payload)
+    {
+        return $this->userRepository->update($payload['id'], $payload);
+    }
 }

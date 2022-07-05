@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\DTOs\Pagination\PaginationDTO;
 use App\DTOs\Pagination\PaginationResponseDTO;
 use App\DTOs\User\ChangePasswordDTO;
+use App\DTOs\User\ChangePasswordDTOForParticipantDTO;
+use App\DTOs\User\UpdateAvatarDTO;
 use App\DTOs\User\UpdateExponentPushTokenDTO;
+use App\DTOs\User\UpdateProfileInformationForParticipantDTO;
 use App\DTOs\User\UpdateUserDTO;
 use Illuminate\Http\Request;
 use App\Services\UserService;
@@ -205,6 +208,60 @@ class UserController extends Controller
 
         try {
             return $this->responseSuccess($userFromDB);
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function updateProfileInformationForParticipant(Request $request)
+    {
+        $validate = (new UpdateProfileInformationForParticipantDTO())->validateRequest($request);
+        if ($validate['is_error']) {
+            return  $this->responseError($validate['data'], Response::HTTP_BAD_REQUEST);
+        }
+        try {
+            $payload = $validate['data'];
+            $payload['id'] = auth()->user()['id'];
+            return $this->responseSuccess($this->userService->update($payload));
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function updatePasswordForParticipant(Request $request)
+    {
+        $validate = (new ChangePasswordDTOForParticipantDTO())->validateRequest($request);
+        if ($validate['is_error']) {
+            return  $this->responseError($validate['data'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $dataFromRequest = $validate['data'];
+        $userFromDB = $this->userService->getUserById(auth()->user()['id']);
+        if (!Hash::check($dataFromRequest['current_password'],  $userFromDB['password'])) {
+            return  $this->responseError('current_pass_not_match', Response::HTTP_BAD_REQUEST);
+        }
+
+        $userNeedUpdate = null;
+        $userNeedUpdate['id'] = $userFromDB['id'];
+        $userNeedUpdate['password'] = Hash::make($dataFromRequest['new_password']);
+
+        try {
+            return $this->responseSuccess($this->userService->updateUserById($userFromDB['id'], $userNeedUpdate));
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function updateAvatar(Request $request)
+    {
+        $validate = (new UpdateAvatarDTO())->validateRequest($request);
+        if ($validate['is_error']) {
+            return  $this->responseError($validate['data'], Response::HTTP_BAD_REQUEST);
+        }
+        try {
+            $payload = $validate['data'];
+            $payload['id'] = auth()->user()['id'];
+            return $this->responseSuccess($this->userService->update($payload));
         } catch (\Exception $e) {
             return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }

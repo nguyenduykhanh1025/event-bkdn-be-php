@@ -19,6 +19,11 @@ class EventUserRepository extends BaseRepository
         return $this->model->where('id_event', $idEvent)->where('id_user', $idUser)->get();
     }
 
+    public function findAllByIdEvent($idEvent)
+    {
+        return $this->model->where('id_event', $idEvent)->get();
+    }
+
     public function findUsersExistInTimeEvent($startDate, $endDate, $idUser, $idEvent)
     {
         return DB::select(

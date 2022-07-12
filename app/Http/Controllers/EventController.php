@@ -12,6 +12,7 @@ use App\Services\UserService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\Controller;
 use App\Services\EventService;
+use App\Services\EventUserService;
 use App\Services\ManagerEventService;
 use App\Services\SendNotificationService;
 
@@ -20,15 +21,18 @@ class EventController extends Controller
     private $eventService;
     private $sendNotificationService;
     private $managerEventService;
+    private $eventUserService;
 
     public function __construct(
         EventService $eventService,
         SendNotificationService $sendNotificationService,
-        ManagerEventService $managerEventService
+        ManagerEventService $managerEventService,
+        EventUserService $eventUserService,
     ) {
         $this->eventService = $eventService;
         $this->sendNotificationService = $sendNotificationService;
         $this->managerEventService = $managerEventService;
+        $this->eventUserService = $eventUserService;
     }
 
     public function paginate(Request $request)
@@ -132,6 +136,24 @@ class EventController extends Controller
         try {
             $dataResponse = $this->eventService->getById($eventId);
             $dataResponse['manager_event'] = $this->managerEventService->getById($dataResponse['id_manager_event']);
+            return $this->responseSuccess($dataResponse);
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function delete(Request $request)
+    {
+        $routeParameters = $request->route()->parameters();
+        $eventId = $routeParameters['id'];
+        try {
+            $dataResponse = $this->eventService->delete($eventId);
+            $eventUsersFromDB = $this->eventUserService->getAllByIdEvent($eventId);
+
+            for ($i = 0; $i < count($eventUsersFromDB); ++$i) {
+                $this->eventUserService->delete($eventUsersFromDB[$i]);
+            }
+
             return $this->responseSuccess($dataResponse);
         } catch (\Exception $e) {
             return $this->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);

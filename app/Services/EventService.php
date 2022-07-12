@@ -151,4 +151,9 @@ class EventService
     {
         return $this->eventRepository->findSumPointNumber();
     }
+
+    public function delete($id)
+    {
+        return $this->eventRepository->deleteById($id);
+    }
 }

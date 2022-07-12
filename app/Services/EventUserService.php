@@ -29,6 +29,11 @@ class EventUserService
         return $this->eventUserRepository->findByIdEventAndIdUser($idEvent, $idUser);
     }
 
+    public function getAllByIdEvent($idEvent)
+    {
+        return $this->eventUserRepository->findAllByIdEvent($idEvent);
+    }
+
     public function acceptedUserJoinToEventById($id)
     {
         $payload = null;
@@ -49,6 +54,11 @@ class EventUserService
     }
 
     public function removeById($id)
+    {
+        return $this->eventUserRepository->deleteById($id);
+    }
+
+    public function delete($id)
     {
         return $this->eventUserRepository->deleteById($id);
     }

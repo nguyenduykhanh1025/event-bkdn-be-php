@@ -27,7 +27,7 @@ class EventController extends Controller
         EventService $eventService,
         SendNotificationService $sendNotificationService,
         ManagerEventService $managerEventService,
-        EventUserService $eventUserService,
+        EventUserService $eventUserService
     ) {
         $this->eventService = $eventService;
         $this->sendNotificationService = $sendNotificationService;
